@@ -1,0 +1,10 @@
+{% extends "account/base_entrance.html" %}
+
+{% block title %}Неверный код{% endblock title %}
+
+{% block content %}
+    <h3>Неверный код</h3>
+    <a class="btn btn-danger" href="{% url 'account_inactive' %}">
+    Вернуться к вводу кода
+    </a>
+{% endblock content %}

@@ -1,0 +1,44 @@
+{% extends 'base/default.html' %}
+{% block title %}Все отклики на мои объявления{% endblock title %}
+
+{% block content %}
+    <h3 class="text-warning">Все отклики на мои объявления</h3>
+    <form action="" method="get">
+        {{ filterset.form }}
+        <input class="mt-2" type="submit" value="Применить">
+    </form>
+    {% if comments %}
+    <table>
+        <tr>
+            <td>Автор</td>
+            <td>Дата</td>
+            <td>Содержание</td>
+            <td>Статус</td>
+        </tr>
+        {% for comment in comments %}
+            <tr>
+                <td>{{ comment.user.username }}</td>
+                <td>{{ comment.created_at|date:'d E Y' }}</td>
+                <td>{{ comment.content }}</td>
+                <td>
+                    {% if comment.status %}
+                        <span class="text-success">Принят</span>
+                    {% else %}
+                        <span class="text-danger">Не принят</span>
+                        <p>
+                            <a class="btn btn-outline-success btn-sm" href="{% url 'comment_accept' comment.id %}">
+                                Принять
+                            </a>
+                            <a class="btn btn-outline-danger btn-sm" href="{% url 'comment_delete' comment.id %}">
+                                Удалить
+                            </a>
+                        </p>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        Нет откликов!
+    {% endif %}
+{% endblock content %}

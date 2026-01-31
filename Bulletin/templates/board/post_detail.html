@@ -1,0 +1,45 @@
+{% extends 'base/default.html' %}
+{% block title %}Объявление{{ post.title }}{% endblock title %}
+
+{% block content %}
+    <h3 class="text-primary">Объявление "{{ post.title }}"</h3>
+
+    <table>
+        <tr>
+            <td>Дата</td>
+            <td>Заголовок</td>
+            <td>Содержание</td>
+            <td>Категория</td>
+            <td>Автор</td>
+        </tr>
+            <tr>
+                <td>{{ post.created_at|date:'d E Y' }}</td>
+                <td>{{ post.title }}</td>
+                <td>{{ post.content|safe }}</td>
+                <td>{{ post.category.name }} </td>
+                <td>{{ post.user.username }}</td>
+            </tr>
+    </table>
+    {% if post.user.username == user.username %}
+    <a  class="btn btn-primary btn-sm" href="{% url 'board_update' post.id %}">Редактировать</a>
+    {% endif %}
+
+    <h3>Добавить отклик</h3>
+    <form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+        <input type="submit" value="Добавить">
+    </form>
+
+    {% if post.comment_set.all %}
+        <h3>Все отклики:</h3>
+        {% for comment in post.comment_set.all %}
+            {% if comment.status %}
+            <p>{{ comment.content }}</p>
+            {% else %}
+            <p>Отклик на модерации</p>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+{% endblock content %}
